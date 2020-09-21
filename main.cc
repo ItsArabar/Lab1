@@ -1,9 +1,11 @@
 #include <random>
 #include <iostream>
+#include <chrono>
 
 int main(){
-	std::random_device rd;
-	std::minstd_rand rnd(rd());
+	using clk = std::chrono::system_clock;
+	//std::random_device rd;
+	std::minstd_rand rnd{unsigned(clk::now().time_since_epoch().count())};
 	std::uniform_int_distribution<> d {15,25};
 
 
