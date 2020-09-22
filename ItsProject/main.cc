@@ -11,6 +11,31 @@
 #include <random>
 #include <iostream>
 #include <chrono>
+#include <sstream>
+
+int read_int(const char * question){
+	int result;
+	std::string inp;
+	re: std::cout << question;
+	std::getline(std::cin, inp);
+	{
+		std::stringstream inps {inp};
+		inps >> result;
+		if (inps.fail()){
+			if(std::cin.fail()){
+				std::cerr << "Ошибка ввода/вывода!" << std::endl;
+				exit(1);
+			}
+			std::cout << "Некорректный ввод!" << std::endl;
+			goto re;
+		}
+		else if (not inps.eof()) {
+			std::cout << "Непонятный мусор в конце ввода." << std::endl;
+			goto re;
+		}
+	}
+	return result;
+}
 
 int main(){
 	using clk = std::chrono::system_clock;
@@ -20,13 +45,15 @@ int main(){
 	unsigned stone_count = d(rnd);
 	//Сообщаем юзверю о кол-ве камней
 	do {std::cout << "В куче " << stone_count << " камней" << std::endl;
-	std::cout << "Каждый ход вы можете взять из кучи 1, 2 или 3 камня. Не более и не менее." << std::endl;
-	std::cout << std::endl;
-	//Спрашиваем, сколько тянет юзверь
-	std::cout << "Сколько камней Вы берете?" << std::endl;
-	//Уменьшаем кучу
-	//Если 0 камней, то юзверь проиграл, иначе ход компьютера
-	//Если 1 камень, то проиграл компьютер
+		std::cout << "Каждый ход вы можете взять из кучи 1, 2 или 3 камня. Не более и не менее." << std::endl;
+		std::cout << std::endl;
+		//Спрашиваем, сколько тянет юзверь
+		std::cout << "Сколько камней Вы берете?" << std::endl;
+		int x = read_int("Введите число: ");
+		//Уменьшаем кучу
+		stone_count = stone_count - x;
+		//Если 0 камней, то юзверь проиграл, иначе ход компьютера
+		//Если 1 камень, то проиграл компьютер
 	} while(true);
 
 
